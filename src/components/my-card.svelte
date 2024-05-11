@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
   import { cn } from "$lib/utils.js";
+  import * as util from '$lib/utils';
 
   import BellRing from "lucide-svelte/icons/bell-ring";
   import Check from "lucide-svelte/icons/check";
@@ -12,26 +13,17 @@
   import * as Card from "$lib/components/ui/card/index.js";
   import * as Popover from "$lib/components/ui/popover/index.js";
 
+  import PocketBase from 'pocketbase';
+
+  const url = 'https://problem-some.pockethost.io/'
+  const client = new PocketBase(url);
+  let records = util.getPeople(client);
+
   import {
     DateFormatter,
     type DateValue,
     getLocalTimeZone,
   } from "@internationalized/date";
-
-  const notifications = [
-    {
-      title: "Your call has been confirmed.",
-      description: "1 hour ago",
-    },
-    {
-      title: "You have a new message!",
-      description: "1 hour ago",
-    },
-    {
-      title: "Your subscription is expiring soon!",
-      description: "2 hours ago",
-    },
-  ];
 
   const df = new DateFormatter("en-US", {
     dateStyle: "long",
@@ -39,12 +31,26 @@
 
   let value: DateValue | undefined = undefined;
   let checked: boolean = true;
+  let isDark: boolean = false;
+
+  function loadPeople() {
+    records = util.getPeople(client);
+  }
+
+  function toggleDark() {
+    isDark = !isDark;
+    if (isDark) document.body.classList.add('dark');
+    if (!isDark) document.body.classList.remove('dark');
+  }
 
   type $$Props = HTMLAttributes<HTMLDivElement>;
   let className: $$Props["class"] = undefined;
   export { className as class };
 </script>
 
+{#await records}
+<span>Loading...</span>
+{:then people}
 <Card.Root class={cn("w-[380px]", className)}>
   <Card.Header>
     <Card.Title>Notifications</Card.Title>
@@ -79,33 +85,34 @@
         </p>
       </div>
       <Switch bind:checked />
-      <div>{checked}</div>
     </div>
     <div>
-      {#each notifications as notification, idx (idx)}
+      {#each people as person, idx (idx)}
         <div
           class="mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0"
         >
           <span class="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500" />
           <div class="space-y-1">
             <p class="text-sm font-medium leading-none">
-              {notification.title}
+              {person.name}
             </p>
             <p class="text-sm text-muted-foreground">
-              {notification.description}
+              {@html person.bio}
             </p>
           </div>
         </div>
       {/each}
     </div>
   </Card.Content>
-  <Card.Footer>
-    <Button
-      data-confetti-button
-      on:click={() => alert("clicked")}
-      class="w-full"
-    >
+  <Card.Footer class="flex flex-col gap-1">
+    <Button on:click={toggleDark} class="w-full">
       <Check class="mr-2 h-4 w-4" /> Mark all as read
+    </Button>
+    <Button on:click={loadPeople} class="w-full">
+      <Check class="mr-2 h-4 w-4" /> Reload
     </Button>
   </Card.Footer>
 </Card.Root>
+{:catch error}
+  <pre>{error}</pre>
+{/await}

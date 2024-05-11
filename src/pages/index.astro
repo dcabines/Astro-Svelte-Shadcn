@@ -1,6 +1,6 @@
 ---
 import "$lib/styles/app.css";
-import MyCard from "$lib/components/my-card.svelte";
+import Tabs from "$lib/components/my-tabs.svelte";
 ---
 
 <html lang="en">
@@ -9,11 +9,8 @@ import MyCard from "$lib/components/my-card.svelte";
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <title>Astro</title>
-    <style>MyCard { display: block; }</style>
   </head>
   <body>
-    <div class="container mt-10 flex gap-10">
-      <MyCard client:load></MyCard>
-    </div>
+    <Tabs client:load />
   </body>
 </html>
