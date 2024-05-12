@@ -1,0 +1,25 @@
+---
+import "$lib/styles/app.css";
+import { ModeWatcher } from "mode-watcher";
+// import Nav from '$lib/layouts/parts/nav.astro';
+import Nav from '$lib/components/nav.svelte';
+const { title } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <ModeWatcher />
+    <div class="flex flex-col h-full overflow-hidden">
+      <Nav client:load />
+      <div class="flex-1 overflow-auto">
+        <slot />
+      </div>
+    </div>
+  </body>
+</html>
