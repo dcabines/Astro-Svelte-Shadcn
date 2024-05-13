@@ -1,9 +1,10 @@
 ---
-import Layout from '$lib/layouts/layout.astro';
+import Layout from "$lib/layouts/layout.astro";
+import MyCard from "$lib/components/my-card.svelte";
 ---
 
 <Layout title="Home">
   <div class="h-full flex flex-col items-center place-content-center bg-muted/40">
-    Home Page
+    <MyCard client:visible />
   </div>
 </Layout>

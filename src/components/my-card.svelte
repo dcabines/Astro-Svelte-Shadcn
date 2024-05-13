@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { HTMLAttributes } from "svelte/elements";
   import { cn } from "$lib/utils.js";
-  import * as util from '$lib/utils';
+  import * as util from "$lib/utils";
 
   import BellRing from "lucide-svelte/icons/bell-ring";
   import Check from "lucide-svelte/icons/check";
@@ -13,17 +13,13 @@
   import * as Card from "$lib/components/ui/card/index.js";
   import * as Popover from "$lib/components/ui/popover/index.js";
 
-  import PocketBase from 'pocketbase';
+  import PocketBase from "pocketbase";
 
-  const url = 'https://problem-some.pockethost.io/'
+  const url = "https://problem-some.pockethost.io/";
   const client = new PocketBase(url);
   let records = util.getPeople(client);
 
-  import {
-    DateFormatter,
-    type DateValue,
-    getLocalTimeZone,
-  } from "@internationalized/date";
+  import { DateFormatter, type DateValue, getLocalTimeZone } from "@internationalized/date";
 
   const df = new DateFormatter("en-US", {
     dateStyle: "long",
@@ -39,8 +35,8 @@
 
   function toggleDark() {
     isDark = !isDark;
-    if (isDark) document.body.classList.add('dark');
-    if (!isDark) document.body.classList.remove('dark');
+    if (isDark) document.body.classList.add("dark");
+    if (!isDark) document.body.classList.remove("dark");
   }
 
   type $$Props = HTMLAttributes<HTMLDivElement>;
@@ -48,9 +44,6 @@
   export { className as class };
 </script>
 
-{#await records}
-<span>Loading...</span>
-{:then people}
 <Card.Root class={cn("w-[380px]", className)}>
   <Card.Header>
     <Card.Title>Notifications</Card.Title>
@@ -59,14 +52,7 @@
   <Card.Content class="grid gap-4">
     <Popover.Root>
       <Popover.Trigger asChild let:builder>
-        <Button
-          variant="outline"
-          class={cn(
-            "w-[280px] justify-start text-left font-normal",
-            !value && "text-muted-foreground",
-          )}
-          builders={[builder]}
-        >
+        <Button variant="outline" class={cn("w-[280px] justify-start text-left font-normal", !value && "text-muted-foreground")} builders={[builder]}>
           <CalendarIcon class="mr-2 h-4 w-4" />
           {value ? df.format(value.toDate(getLocalTimeZone())) : "Pick a date"}
         </Button>
@@ -80,28 +66,30 @@
       <BellRing />
       <div class="flex-1 space-y-1">
         <p class="text-sm font-medium leading-none">Push Notifications</p>
-        <p class="text-sm text-muted-foreground">
-          Send notifications to device.
-        </p>
+        <p class="text-sm text-muted-foreground">Send notifications to device.</p>
       </div>
       <Switch bind:checked />
     </div>
     <div>
-      {#each people as person, idx (idx)}
-        <div
-          class="mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0"
-        >
-          <span class="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500" />
-          <div class="space-y-1">
-            <p class="text-sm font-medium leading-none">
-              {person.name}
-            </p>
-            <p class="text-sm text-muted-foreground">
-              {@html person.bio}
-            </p>
+      {#await records}
+        <span>Loading...</span>
+      {:then people}
+        {#each people as person, idx (idx)}
+          <div class="mb-4 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0">
+            <span class="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500" />
+            <div class="space-y-1">
+              <p class="text-sm font-medium leading-none">
+                {person.name}
+              </p>
+              <p class="text-sm text-muted-foreground">
+                {@html person.bio}
+              </p>
+            </div>
           </div>
-        </div>
-      {/each}
+        {/each}
+      {:catch error}
+        <pre>{error}</pre>
+      {/await}
     </div>
   </Card.Content>
   <Card.Footer class="flex flex-col gap-1">
@@ -113,6 +101,3 @@
     </Button>
   </Card.Footer>
 </Card.Root>
-{:catch error}
-  <pre>{error}</pre>
-{/await}
