@@ -74,6 +74,7 @@
       <Menubar.Item href="/joke-tax" class="flex h-10 select-none items-center rounded-button py-3 pl-3 pr-1.5 text-sm font-medium !ring-0 !ring-transparent data-[highlighted]:bg-muted">Joke Tax</Menubar.Item>
       <Menubar.Item href="/login" class="flex h-10 select-none items-center rounded-button py-3 pl-3 pr-1.5 text-sm font-medium !ring-0 !ring-transparent data-[highlighted]:bg-muted">Login</Menubar.Item>
       <Menubar.Item href="/card" class="flex h-10 select-none items-center rounded-button py-3 pl-3 pr-1.5 text-sm font-medium !ring-0 !ring-transparent data-[highlighted]:bg-muted">Card</Menubar.Item>
+      <Menubar.Item href="/natural-programming" class="flex h-10 select-none items-center rounded-button py-3 pl-3 pr-1.5 text-sm font-medium !ring-0 !ring-transparent data-[highlighted]:bg-muted">Natural Programming</Menubar.Item>
       <Menubar.Separator />
       <Menubar.Sub>
         <Menubar.SubTrigger class="flex h-10 select-none items-center rounded-button py-3 pl-3 pr-1.5 text-sm font-medium !ring-0 !ring-transparent data-[highlighted]:bg-muted data-[state=open]:bg-muted">

@@ -1,0 +1,24 @@
+---
+import '$lib/styles/app.css';
+import Layout from '$lib/layouts/layout.astro';
+import { Separator } from "$lib/components/ui/separator/index.js";
+import PageOne from '$lib/content/natural-programming/page-1.md';
+import PageTwo from '$lib/content/natural-programming/page-2.md';
+import PageThree from '$lib/content/natural-programming/page-3.md';
+import PageFour from '$lib/content/natural-programming/page-4.md';
+---
+
+<Layout title="Home">
+  <div class="h-full overflow-auto items-center bg-muted/40">
+    <div class="prose lg:prose-xl container max-w-screen-md pt-20 pb-80 bg-white drop-shadow-md">
+        <PageOne />
+        <Separator />
+        <PageTwo />
+        <Separator />
+        <PageThree />
+        <Separator />
+        <PageFour />
+        <Separator />
+    </div>
+  </div>
+</Layout>
